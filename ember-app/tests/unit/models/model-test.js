@@ -17,21 +17,3 @@ test('it exists', function(assert) {
   assert.ok(sinon);
 });
 
-test('it should delegate to the promise proxy', function(assert){
-  fixture('/api/foo', {
-    statusText: 'success',
-    response: {data: {id:1, type:'foo'}}
-  });
-
-  var model = this.subject({
-    promise: request('/api/foo')
-  });
-
-  model.then(function(foo) {
-    assert.ok(foo, 'no foo');
-    assert.ok(model.get('isFulfilled'), 'promise is fulfilled');
-    assert.equal(model.get('data.id'), 1);
-
-  });
-
-});
