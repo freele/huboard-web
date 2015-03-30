@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     get 'uploads/asset' => 'uploads#asset_uploader'
     scope '/:user/:repo' do
       constraints(:user => /[^\/]+/, :repo => /[^\/]+/) do
+        get '/' => 'repo#show'
         get 'hooks' => 'webhooks#hooks'
         resources :integrations, only: [:index, :create, :destroy]
         resources :milestones, only: [:create, :update]

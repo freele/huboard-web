@@ -27,7 +27,7 @@ var Repo = Ember.Object.extend(Serializable,{
        self._board =  Board.create(_.extend(board, {issues: issues, linkedBoardsPreload: linkedBoards}));
        self.set("board", self._board);
        return self._board;
-    });
+    }.bind(this));
   },
   fetchLinkedBoards: function(){
     if(this._linkedBoards) {return this._linkedBoards;}

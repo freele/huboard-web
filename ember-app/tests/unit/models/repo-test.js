@@ -1,5 +1,6 @@
-import Repo from 'app/models/repo';
+import Repo from 'app/models/new/repo';
 import Ember from 'ember'; 
+import repo from '../../fixtures/repo';
 
 import request from 'ic-ajax';
 import { defineFixture as fixture } from 'ic-ajax';
@@ -20,23 +21,47 @@ test('it exists', function(assert) {
 });
 
 test('user url is the owner name', function(assert){
-  var model = Repo.create({owner: { login: 'ryan' }});
+  var model = Repo.create(repo);
 
-  assert.equal(model.get('userUrl'), "/ryan");
+  assert.equal(model.get('userUrl'), "/rauhryan");
 });
 
 test('fetched board should contain issues', (assert) => {
 
-  var model = Repo.create({full_name: 'rauhryan/huboard'});
+  var model = Repo.create(repo);
 
-  fixture('/api/rauhryan/huboard/board', {
+  fixture('/api/rauhryan/skipping_stones_repo/board', {
     response: { issues:[{}]},
     jqXHR: {},
     textStatus: 'success'
   });
-  
-  model.fetchBoard([]).then(response => {
-    assert.ok(response.issues.length);
+
+  model.get('board').then(function(board){
+    assert.ok(board);
   });
+  
+
+});
+
+test('accessing links should fire off links request', (assert) => {
+
+  var model = Repo.create(repo);
+
+  fixture('/api/rauhryan/furry-tribble', {
+    response: repo,
+    jqXHR: {},
+    textStatus: 'success'
+  });
+
+  fixture('/api/rauhryan/beyond_amd', {
+    response: repo,
+    jqXHR: {},
+    textStatus: 'success'
+  });
+
+  model.get('links').then(function(links){
+    assert.ok(links);
+  });
+  
 
 });

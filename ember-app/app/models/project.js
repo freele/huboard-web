@@ -5,9 +5,6 @@ import ajax from 'ic-ajax';
 var Board = Ember.Object.extend();
 
 var Repo = Ember.Object.extend({
-  //repo: json of repo 
-  //labels: []
-  //parent: //Repo
   baseUrl: Ember.computed('repo.full_name', function () {
     return `/api/${this.get('repo.full_name')}`;
   }),
