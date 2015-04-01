@@ -7,7 +7,7 @@ var PromiseObject = Ember.Object.extend(Ember.PromiseProxyMixin);
 var Repo = Model.extend({
   parent: null,
   baseUrl: Ember.computed('data.full_name', function () {
-    return `/api/${this.get('data.repo.full_name')}`;
+    return `/api/v2/${this.get('data.repo.full_name')}`;
   }),
   userUrl :function () {
     return "/" + this.get("data.owner.login");
@@ -28,31 +28,19 @@ var Repo = Model.extend({
     });
   }),
   links: Ember.computed('data.links', function(){
-    var self = this,
+    var self = this, 
       links = this.get('data.links');
-    return PromiseObject.extend({
-      promise: Ember.computed(function(){
-        return new Ember.RSVP.Promise(function(resolve, reject){
-          var promises = links.map(function(link){
-            var url = `/api/${link.user}/${link.repo}`;
-            return self.get('ajax')(url);
-          });
-
-          Ember.RSVP.all(promises).then(function(responses){
-            var response = Ember.A();
-            responses.forEach(function(link){
-              var repo = Repo.create(link);
-              repo.set('parent', self);
-              response.pushObject(repo);
-            });
-            resolve(response);
-          }, reject);
-        });
-      })
-    }).create();
+    var response = Ember.A();
+    links.forEach(function(link){
+      var repo = Repo.create({ data: link });
+      repo.set('parent', self);
+      response.pushObject(repo);
+    });
+    return response;
   }),
   board: Ember.computed(function(){
-    return Board.create({ repo: this });
+    //fetch links first? ... no load them with the repo
+    return Board.fetch(this);
   })
 });
 
