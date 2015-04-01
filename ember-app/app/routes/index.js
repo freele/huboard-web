@@ -1,5 +1,5 @@
 import CssView from 'app/views/css';
-import Board from 'app/models/board';
+import Board from 'app/models/new/board';
 import Ember from 'ember';
 import Issue from 'app/models/issue';
 
@@ -8,10 +8,9 @@ import Issue from 'app/models/issue';
 var IndexRoute = Ember.Route.extend({
   model: function(){
     var repo = this.modelFor("application");
-    var linked_boards = repo.fetchLinkedBoards();
-    return repo.fetchBoard(linked_boards);
+    return repo.get('board');
   },
-  afterModel: function (model){
+  afterModelx: function (model){
     if(App.get("isLoaded")) {
       return;
     }
@@ -40,8 +39,8 @@ var IndexRoute = Ember.Route.extend({
   renderTemplate: function() {
 
     this._super.apply(this, arguments);
-    this.render('assignee', {into: 'index', outlet: 'sidebarTop'});
-    this.render('filters', {into: 'index', outlet: 'sidebarMiddle'});
+   // this.render('assignee', {into: 'index', outlet: 'sidebarTop'});
+   // this.render('filters', {into: 'index', outlet: 'sidebarMiddle'});
   },
   actions : {
     createNewIssue : function (model, order) {

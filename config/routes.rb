@@ -29,9 +29,15 @@ Rails.application.routes.draw do
 
   namespace :api do
     get 'uploads/asset' => 'uploads#asset_uploader'
+    scope '/v2/:user/:repo' do
+      constraints(:user => /[^\/]+/, :repo => /[^\/]+/) do
+        get '/' => 'repos#show'
+        get 'issues' => 'repos#issues' 
+        get 'board' => 'repos#board', as: 'v2_board'
+      end
+    end
     scope '/:user/:repo' do
       constraints(:user => /[^\/]+/, :repo => /[^\/]+/) do
-        get '/' => 'repo#show'
         get 'hooks' => 'webhooks#hooks'
         resources :integrations, only: [:index, :create, :destroy]
         resources :milestones, only: [:create, :update]

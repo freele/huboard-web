@@ -1,7 +1,8 @@
 import SocketMixin from 'app/mixins/socket';
 import Ember from 'ember';
-import Repo from 'app/models/repo';
+import Repo from 'app/models/new/repo';
 import animateModalClose from 'app/config/animate-modal-close';
+import ajax from 'ic-ajax';
 
 
 
@@ -44,12 +45,8 @@ var ApplicationRoute = Ember.Route.extend({
     }
   },
   model: function () {
-    return new Ember.RSVP.Promise(function(resolve){
-       Ember.run.once(function(){
-        console.log("TODO: fix this call to App");
-        var repo = App.get("repo");
-        resolve(Repo.create(repo));
-       });
+    return ajax(`/api/v2/${App.get('repo.full_name')}`).then(function(result){
+      return Repo.create(result);
     });
   },
   setupController: function(controller){

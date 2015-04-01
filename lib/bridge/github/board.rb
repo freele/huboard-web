@@ -51,6 +51,15 @@ class Huboard
       board
     end
 
+    def fetch
+      gh_repos = gh
+      columns = column_labels
+      {
+        "id" => gh_repos['id'],
+        full_name: gh_repos['full_name'],
+        columns: columns,
+      }
+    end
     def meta
       gh_repos = gh
       columns = column_labels
@@ -83,24 +92,5 @@ class Huboard
       create_hook
     end
 
-    def merge(target, other, label)
-      return target unless target[:labels].size == other[:labels].size
-
-      target[:labels].each_with_index do |l, i|
-        linked = other[:labels][i][:issues].map do |issue|
-          issue["repo"][:color] = label['color']
-          issue
-        end
-        l[:issues] = l[:issues].concat(linked).sort_by { |issue| issue['order'] }
-      end
-
-      milestones = other[:milestones].reject {|m| target[:milestones].any? { |o| o['title'] == m['title'] }}
-      target[:milestones] = target[:milestones].concat(milestones).sort_by { |m| m["_data"]["order"] || m["number"].to_f }
-
-      labels = other[:other_labels].reject {|m| target[:other_labels].any? { |o| o['name'] == m['name'] }}
-      target[:other_labels] = target[:other_labels].concat(labels)
-
-      target
-    end
   end
 end
