@@ -49,13 +49,10 @@ var CardController = Ember.ObjectController.extend(SocketMixin,{
     }
   },
   issueNumber: function () {
-     return this.get("model.number");
+     return this.get("model.data.number");
   }.property(),
   repositoryName: function () {
-     var repo = this.get("model.repo.name"),
-        login = this.get("model.repo.owner.login");
-
-    return login  + "/" + repo;
+    return this.get('model.repo.data.repo.full_name');
   }.property(),
   actions : {
     moved: function (index, column){

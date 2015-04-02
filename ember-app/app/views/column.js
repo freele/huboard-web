@@ -1,8 +1,9 @@
-import WrapperView from 'app/views/card-wrapper';
+import WrapperView from 'app/views/card';
 import Ember from 'ember';
+import collectionView from 'app/views/context-collection';
 
 
-var CollectionView = Ember.CollectionView.extend({
+var CollectionView = collectionView.extend({
   tagName:"ul",
   classNames: ["sortable"],
   classNameBindings:["isHovering:ui-sortable-hover"],

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 var CardWrapperView = Ember.View.extend({
-    templateName: "cardItem",
+    //templateName: "cardItem",
     classNames: ["card"],
     classNameBindings: ["isFiltered","isDraggable:is-draggable", "isClosable:closable", "colorLabel", "content.color:border"],
     colorLabel: function () {

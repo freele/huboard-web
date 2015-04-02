@@ -59,10 +59,6 @@ Ember.onLoad("Ember.Application", function ($app) {
               source: source,
               callbacks: callbacks
             };
-
-          },
-          init: function () {
-            this.subscribeTo(this.get("repo.full_name"));
           }
         });
       } 

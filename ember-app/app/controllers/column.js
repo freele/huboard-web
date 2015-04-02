@@ -38,9 +38,27 @@ var ColumnController = Ember.ObjectController.extend({
     });
     return issues;
   },
-  issues: function(){
+  issues: Ember.computed('model', function(){
+    return Ember.ArrayController
+    .extend({
+      container: this.container,
+      itemController: 'card'
+    })
+    .create({
+      parentController: this,
+      content: this.get('model'),
+      sortProperties: ["number"]
+    });
+  }),
+  xxissues: Ember.computed('model', function(){
+    return Ember.ArrayProxy.extend(Ember.SortableMixin).create({
+      content: this.get('model'),
+      sortProperties: ["number"]
+    });
+  }),
+  xissues: function(){
     return this.getIssues();
-  }.property("controllers.index.forceRedraw"),
+  }.property("controllers.index.forceRedraw", "controllers.index.model.combinedIssues"),
   dragging: false,
   cardMoved : function (cardController, index){
     cardController.send("moved", index, this.get("model"));

@@ -32,7 +32,15 @@
   <div id="content" class="content">
     <div class="board board-not-dragging">
       {{#each column in board_columns }}
-      {{ render "column" column }}
+        {{#if column.isPending}}
+          <div class="task-column column">
+          <h3>
+            Loading...
+          </h3>
+          </div>
+        {{else}}
+          {{ render "column" column.filteredContent }}
+        {{/if}}
       {{/each}}
     </div>
   </div>

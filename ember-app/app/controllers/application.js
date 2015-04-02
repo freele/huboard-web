@@ -58,8 +58,8 @@ var ApplicationController = Ember.ObjectController.extend({
      return "*";
   }.property(),
   repositoryName: function () {
-    return this.get("model.full_name");
-  }.property("model.full_name"),
+    return this.get("model.data.repo.full_name");
+  }.property("model.data.repo.full_name"),
 });
 
 export default ApplicationController;

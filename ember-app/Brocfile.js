@@ -30,6 +30,8 @@ app.import('bower_components/jquery-textcomplete/dist/jquery.textcomplete.min.js
 app.import('bower_components/jquery-color/jquery.color.js')
 app.import('app/vendor/task-list.js')
 
-
+if (app.env !== 'production') {
+    app.import('bower_components/ember/ember-template-compiler.js');
+}
 
 module.exports = app.toTree();

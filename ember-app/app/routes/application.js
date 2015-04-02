@@ -45,7 +45,10 @@ var ApplicationRoute = Ember.Route.extend({
     }
   },
   model: function () {
+    var socket = this.get("socket");
     return ajax(`/api/v2/${App.get('repo.full_name')}`).then(function(result){
+      socket.subscribeTo(result.data.repo.full_name);
+      result.data.links.forEach((link) => socket.subscribeTo(link.repo.full_name)); 
       return Repo.create(result);
     });
   },

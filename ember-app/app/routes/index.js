@@ -10,6 +10,9 @@ var IndexRoute = Ember.Route.extend({
     var repo = this.modelFor("application");
     return repo.get('board');
   },
+  afterModel: function(model){
+    model.get('columns');
+  },
   afterModelx: function (model){
     if(App.get("isLoaded")) {
       return;

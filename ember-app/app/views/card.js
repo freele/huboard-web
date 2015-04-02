@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import template from 'app/templates/card';
+import Wrapper from 'app/views/card-wrapper';
 
-var CardView = Ember.View.extend({
+var CardView = Wrapper.extend({
   template: template,
   classNameBindings:["stateClass"],
   stateClass: function(){
