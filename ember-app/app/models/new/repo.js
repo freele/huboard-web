@@ -12,6 +12,9 @@ var Repo = Model.extend({
   userUrl :function () {
     return "/" + this.get("data.owner.login");
   }.property("owner.login"),
+  repoUrl :function () {
+    return `${this.get('userUrl')}/${this.get("data.repo.name")}`;
+  }.property("data.repo.name",'userUrl'),
   issues: Ember.computed(function(){
     var self = this;
     return PromiseObject.create({
