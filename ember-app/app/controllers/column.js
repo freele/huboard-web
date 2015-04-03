@@ -4,12 +4,8 @@ import Issue from 'app/models/issue';
 var ColumnController = Ember.ObjectController.extend({
   needs: ["index", "application"],
   style: Ember.computed.alias("controllers.index.column_style"),
-  isLastColumn: function(){
-    return this.get("controllers.index.columns.lastObject.name") === this.get("model.name");
-  }.property("controllers.index.columns.lastObject"),
-  isFirstColumn: function(){
-    return this.get("controllers.index.columns.firstObject.name") === this.get("model.name");
-  }.property("controllers.index.columns.firstObject"),
+  isLastColumn: Ember.computed.alias('model.isLast'), 
+  isFirstColumn: Ember.computed.alias('model.isFirst'), 
   isCreateVisible: Ember.computed.alias("isFirstColumn"),
   isCollapsed: function(key, value) {
     if(arguments.length > 1) {
@@ -20,25 +16,7 @@ var ColumnController = Ember.ObjectController.extend({
     }
   }.property(),
   isHovering: false,
-  getIssues: function(){
-    var index = this.get("model.index");
-    var column = this.get("model");
-    var issues = this.get("controllers.index.model.combinedIssues").filter(function(i){
-      return i.current_state.index === index;
-    })
-    .filter(function(i) {
-      // FIXME: this flag is for archived issue left on the board.
-      return !i.get("isArchived");
-    })
-    .map(function (i){
-       i.set("current_state", column);
-       return i;
-    }).sort(function (a, b){
-       return a._data.order - b._data.order;
-    });
-    return issues;
-  },
-  issues: Ember.computed('model', function(){
+  issues: Ember.computed('model.filteredContent', function(){
     return Ember.ArrayController
     .extend({
       container: this.container,
@@ -46,19 +24,10 @@ var ColumnController = Ember.ObjectController.extend({
     })
     .create({
       parentController: this,
-      content: this.get('model'),
+      content: this.get('model.filteredContent'),
       sortProperties: ["number"]
     });
   }),
-  xxissues: Ember.computed('model', function(){
-    return Ember.ArrayProxy.extend(Ember.SortableMixin).create({
-      content: this.get('model'),
-      sortProperties: ["number"]
-    });
-  }),
-  xissues: function(){
-    return this.getIssues();
-  }.property("controllers.index.forceRedraw", "controllers.index.model.combinedIssues"),
   dragging: false,
   cardMoved : function (cardController, index){
     cardController.send("moved", index, this.get("model"));
@@ -66,7 +35,7 @@ var ColumnController = Ember.ObjectController.extend({
   topOrderNumber: function(){
     var issues = this.get("issues");
     if(issues.length){
-      return { order: issues.get("firstObject._data.order") / 2 };
+      return { order: issues.get("firstObject.model.data._data.order") / 2 };
     } else {
       return {};
     }

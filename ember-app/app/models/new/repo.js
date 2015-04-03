@@ -30,6 +30,9 @@ var Repo = Model.extend({
       })
     });
   }),
+  milestonesLength: Ember.computed.alias('data.milestones.length'),
+  milestones: Ember.computed('data.milestones', 'data.milestones.length', function(){
+  }),
   links: Ember.computed('data.links', function(){
     var self = this, 
       links = this.get('data.links');
