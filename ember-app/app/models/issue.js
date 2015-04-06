@@ -207,8 +207,8 @@ var Issue = Ember.Object.extend(Serializable,{
       if(changedColumns){
         this.set("_data.custom_state", "");
       }
-      this.set("current_state", column);
       this.set("_data.order", index);
+      this.set("current_state", column);
 
       var user = this.get("repo.owner.login"),
           repo = this.get("repo.name"),

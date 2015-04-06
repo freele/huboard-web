@@ -2,6 +2,7 @@ import WrapperView from 'app/views/card';
 import Ember from 'ember';
 import collectionView from 'app/views/context-collection';
 
+var $ = Ember.$;
 
 var CollectionView = collectionView.extend({
   tagName:"ul",
@@ -16,6 +17,7 @@ var CollectionView = collectionView.extend({
     this.$().sortable({
       tolerance: 'pointer',
       connectWith:".sortable",
+      helper: 'clone',
       placeholder: "ui-sortable-placeholder",
       items: "li.is-draggable",
       over: function () {
@@ -33,11 +35,14 @@ var CollectionView = collectionView.extend({
       update: function (ev, ui) {
 
         var findViewData = function (element){
-           return Ember.View.views[Ember.$(element).find("> div").attr("id")]
+           var viewId = $(element)
+            //.find("> div")
+            .attr("id");
+           return Ember.View.views[viewId]
              .get("controller");
         };
 
-        var elements = Ember.$("> li", that.$()),
+        var elements = $("> li", that.$()),
         index = elements.index(ui.item);
 
         if(index === -1) { return; }
@@ -52,6 +57,8 @@ var CollectionView = collectionView.extend({
         afterData = findViewData(afterElement),
         before = beforeData.get("model._data.order") || beforeData.get("model.number"),
         after = afterData.get("model._data.order") || afterData.get("model.number");
+
+        that.$().sortable('cancel');
 
         if(first && last) {
           that.get("controller").cardMoved(currentData, currentData.get("model.number"));

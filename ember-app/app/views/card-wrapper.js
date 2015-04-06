@@ -8,7 +8,7 @@ var CardWrapperView = Ember.View.extend({
       return "-x" + this.get("content.color");
     }.property("content.color"),
     isCollaborator: function(){
-      return this.get("content.repo.is_collaborator");
+      return this.get("controller.isCollaborator");
     }.property("content.repo.is_collaborator"),
     isClosable: function () {
      var currentState = this.get("content.current_state");

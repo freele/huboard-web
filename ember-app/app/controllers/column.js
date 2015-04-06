@@ -25,7 +25,7 @@ var ColumnController = Ember.ObjectController.extend({
     .create({
       parentController: this,
       content: this.get('model.filteredContent'),
-      sortProperties: ["number"]
+      sortProperties: ["data._data.order"]
     });
   }),
   dragging: false,

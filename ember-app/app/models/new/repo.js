@@ -6,6 +6,10 @@ import Issue from './issue';
 var PromiseObject = Ember.Object.extend(Ember.PromiseProxyMixin);
 var Repo = Model.extend({
   parent: null,
+  isCollaborator: Ember.computed('data.repo.permissions.{admin,push}', function(){
+    return this.get('data.repo.permissions.admin') || this.get('data.repo.permissions.push');
+  }),
+  isAdmin: Ember.computed.alias('data.repo.permissions.admin'),
   baseUrl: Ember.computed('data.full_name', function () {
     return `/api/v2/${this.get('data.repo.full_name')}`;
   }),

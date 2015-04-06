@@ -5,7 +5,7 @@ import Ember from 'ember';
 var CardController = Ember.ObjectController.extend(SocketMixin,{
   needs: ["application"],
   isCollaborator: function() {
-    return this.get("model.repo.is_collaborator");
+    return this.get("model.repo.isCollaborator");
   }.property("model.repo.is_collaborator"),
   columns: function() {
     return this.get("controllers.application.model.board.columns");
