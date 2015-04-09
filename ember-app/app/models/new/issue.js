@@ -14,9 +14,18 @@ var Issue = Model.extend({
     if(changedColumns){
       this.set("_data.custom_state", "");
     }
-    this.set("data.current_state.index", column.get('data.index').toString());
-    this.set("data.current_state", column.get('data'));
-    this.set("data._data.order", index);
+    Ember.run.next(function(){
+      console.log('run: set state');
+      
+      Ember.beginPropertyChanges();
+      this.set("data.current_state.index", column.get('data.index').toString());
+      this.set("data._data.order", index);
+      Ember.endPropertyChanges();
+      this.set("data.current_state", column.get('data'));
+      Ember.run.next(function(){
+        console.log('run: set order');
+      }.bind(this));
+    }.bind(this));
 
     var user = this.get("repo.owner.login"),
     repo = this.get("repo.repo.name"),
