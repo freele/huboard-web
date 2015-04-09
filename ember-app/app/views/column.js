@@ -32,9 +32,12 @@ var CollectionView = collectionView.extend({
       deactivate: function() {
         // that.get("controller").set("isHovering", false);
       }, 
-      update: function (ev, ui) {
-
+      xbeforeStop: function(ev, ui){
+        debugger;
+      },
+      beforeStop: function (ev, ui) {
         var findViewData = function (element){
+          debugger;
            var viewId = $(element)
             //.find("> div")
             .attr("id");
@@ -60,22 +63,25 @@ var CollectionView = collectionView.extend({
 
         that.$().sortable('cancel');
 
-        if(first && last) {
-          that.get("controller").cardMoved(currentData, currentData.get("model.number"));
-          return;
-        }
-        
-        if(first) {
-          that.get("controller").cardMoved(currentData, (after || 1)/2);
-          // dragged it to the top
+        Ember.run.next(function(){
+          if(first && last) {
+            that.get("controller").cardMoved(currentData, currentData.get("model.number"));
+            return;
+          }
 
-        } else if (last) {
-          // dragged to the bottom
-          that.get("controller").cardMoved(currentData, (before + 1));
+          if(first) {
+            that.get("controller").cardMoved(currentData, (after || 1)/2);
+            // dragged it to the top
 
-        }  else {
-          that.get("controller").cardMoved(currentData, (((after + before) || 1)/2));
-        }
+          } else if (last) {
+            // dragged to the bottom
+            that.get("controller").cardMoved(currentData, (before + 1));
+
+          }  else {
+            that.get("controller").cardMoved(currentData, (((after + before) || 1)/2));
+          }
+        });
+
       }
     });
     this._super();
