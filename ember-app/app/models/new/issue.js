@@ -19,9 +19,10 @@ var Issue = Model.extend({
       
       Ember.beginPropertyChanges();
       this.set("data.current_state.index", column.get('data.index').toString());
+      this.set("data.current_state", column.get('data'));
       this.set("data._data.order", index);
       Ember.endPropertyChanges();
-      this.set("data.current_state", column.get('data'));
+
       Ember.run.next(function(){
         console.log('run: set order');
       }.bind(this));

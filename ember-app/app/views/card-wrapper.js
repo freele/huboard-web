@@ -69,8 +69,8 @@ var CardWrapperView = Ember.View.extend({
 
     }.property("App.memberFilter.mode", "App.dimFilters", "App.hideFilters", "App.searchFilter", "App.eventReceived"),
     click: function(){
-      var view = Ember.View.views[this.$().find("> div").attr("id")];
-      view.get("controller").send("fullscreen");
+      debugger;
+      this.get("controller").send("fullscreen");
     },
     dragAuthorized: function(ev){
       var contains_type =  ev.dataTransfer.types.contains("text/huboard-assignee");
