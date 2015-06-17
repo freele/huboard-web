@@ -9,6 +9,12 @@ var CollectionView = Ember.CollectionView.extend({
   attributeBindings: ["style"],
   style: Ember.computed.alias("controller.style"),
   content: Ember.computed.alias("controller.issues"),
+  rerenderContent: function(){
+    var self = this;
+    Ember.run.once(function(){
+      self.rerender();
+    })
+  }.observes("content.@each"),
   isHovering: false,
   didInsertElement: function(){
     var that = this;
